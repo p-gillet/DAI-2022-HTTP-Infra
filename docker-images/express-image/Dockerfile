@@ -1,4 +1,4 @@
-FROM node:4.4.4
+FROM node:18
 
 COPY src /opt/app/
 

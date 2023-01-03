@@ -1,5 +1,5 @@
 {
-  "name": "src",
+  "name": "Animals",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,5 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Miguel Jalube",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "chance": "^1.0.3",
+    "express": "^4.18.2"
+  }
 }
