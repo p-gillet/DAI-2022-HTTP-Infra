@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  reverse-proxy:
+    container_name: docker-reverse-proxy
+    build:
+      context: .
+    ports:
+      - "80:80"
+    networks:
+      - proxy_net
+  static:
+    container_name: apache-static
+    build:
+      context: ../apache-php-image
+    restart: always
+    depends_on:
+      - reverse-proxy
+    networks:
+      - proxy_net
+  dynamic:
+    container_name: express-dynamic
+    build:
+      context: ../express-image
+    restart: always
+    depends_on:
+      - reverse-proxy
+    networks:
+      - proxy_net
+networks:
+  proxy_net:
