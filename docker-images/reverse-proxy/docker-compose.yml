@@ -1,30 +1,57 @@
 version: "3.9"
 services:
   reverse-proxy:
-    container_name: docker-reverse-proxy
-    build:
-      context: .
+    image: traefik:v2.9
+    command:
+      - --api.dashboard=true
+      - --providers.docker=true
+      - --providers.docker.endpoint=unix:///var/run/docker.sock
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.network=proxy_net
+      - --entrypoints.web.address=:80
     ports:
       - "80:80"
-    networks:
-      - proxy_net
+      - "8080:8080"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.dashboard.rule=Host(`dashboard.localhost`)
+      - traefik.http.routers.dashboard.service=api@internal
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
   static:
     container_name: apache-static
     build:
       context: ../apache-php-image
     restart: always
-    depends_on:
-      - reverse-proxy
     networks:
       - proxy_net
+    labels:
+      - traefik.http.routers.static.rule=Host(`localhost`) && PathPrefix(`/api`)
+      - traefik.http.services.static.loadbalancer.server.port=80
+      - traefik.enable=true
+      - traefik.docker.network=proxy_net
+      - traefik.http.routers.static.entrypoints=web
+      - traefik.http.services.static.loadbalancer.sticky.cookie=true
+      - traefik.http.services.static.loadbalancer.sticky.cookie.name=sticky-cookie
+    depends_on:
+      - reverse-proxy
+      - dynamic
   dynamic:
     container_name: express-dynamic
     build:
       context: ../express-image
     restart: always
-    depends_on:
-      - reverse-proxy
     networks:
       - proxy_net
+    labels:
+      - traefik.http.routers.dynamic.rule=Host(`localhost`) && PathPrefix(`/api/animals/`)
+      - traefik.http.services.dynamic.loadbalancer.server.port=3000
+      - traefik.enable=true
+      - traefik.docker.network=proxy_net
+      - traefik.http.routers.dynamic.entrypoints=web
+      - traefik.http.routers.dynamic.middlewares=dynamic-stripprefix
+      - traefik.http.middlewares.dynamic-stripprefix.stripprefix.prefixes=/api
+    depends_on:
+      - reverse-proxy
 networks:
   proxy_net:
