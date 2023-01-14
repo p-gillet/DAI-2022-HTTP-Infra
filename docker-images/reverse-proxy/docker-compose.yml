@@ -14,6 +14,7 @@ services:
       context: ../apache-php-image
     labels:
       - "traefik.http.routers.static.rule=Host(`static.docker.localhost`)"
+    restart: always
   dynamic:
     container_name: express-dynamic
     build:
@@ -23,3 +24,4 @@ services:
       - "traefik.http.routers.dynamic.middlewares=dynamic"
       - "traefik.http.services.dynamic.loadbalancer.server.port=3000"
       - "traefik.http.middlewares.dynamic.stripprefix.prefixes=/api/animals"
+    restart: always
