@@ -13,14 +13,14 @@ services:
     build:
       context: ../apache-php-image
     labels:
-      - "traefik.http.routers.static.rule=Host(`static.docker.localhost`)"
+      - "traefik.http.routers.static.rule=Host(`localhost`)"
     restart: always
   dynamic:
     container_name: express-dynamic
     build:
       context: ../express-image
     labels:
-      - "traefik.http.routers.dynamic.rule=Host(`dynamic.docker.localhost`) && PathPrefix(`/api/animals`)"
+      - "traefik.http.routers.dynamic.rule=Host(`localhost`) && PathPrefix(`/api/animals`)"
       - "traefik.http.routers.dynamic.middlewares=dynamic"
       - "traefik.http.services.dynamic.loadbalancer.server.port=3000"
       - "traefik.http.middlewares.dynamic.stripprefix.prefixes=/api/animals"

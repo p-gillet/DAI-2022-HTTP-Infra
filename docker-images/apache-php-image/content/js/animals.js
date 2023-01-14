@@ -12,13 +12,15 @@ async function displayAnimals() {
     // Display animals in html table
     let animals = await getAnimals();
     let html = '';
-    animals.forEach(animal => {
+    // Loop through animals and create html table rows
+    console.log(animals);
+    for (let i = 0; i < animals.length; i++) {
         let htmlSegment = `<div class="animal">
-            <h2>${animal.firstName}</h2>
-            <p>${animal.species}</p>
+            <h2>${animals[i].firstName}</h2>
+            <p>${animals[i].species}</p>
             </div>`;
         html += htmlSegment;
-    });
+    }
     let container = document.getElementById("data");
     container.innerHTML = html;
 }
