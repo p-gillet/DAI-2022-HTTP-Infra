@@ -8,14 +8,25 @@ services:
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-  static:
-    container_name: apache-static
+  static1:
+    container_name: apache-static1
     build:
       context: ../apache-php-image
     labels:
-      - "traefik.http.routers.static.rule=Host(`localhost`)"
-      - "traefik.http.services.static.loadBalancer.sticky.cookie=true"
-      - "traefik.http.services.static.loadBalancer.sticky.cookie.name=static"
+      - "traefik.http.routers.static1.rule=Host(`localhost`)"
+      - "traefik.http.services.static1.loadBalancer.sticky=true"
+      - "traefik.http.services.static1.loadBalancer.sticky.cookie=true"
+      - "traefik.http.services.static1.loadBalancer.sticky.cookie.name=static1"
+    restart: always
+  static2:
+    container_name: apache-static2
+    build:
+      context: ../apache-php-image
+    labels:
+      - "traefik.http.routers.static2.rule=Host(`localhost`)"
+      - "traefik.http.services.static2.loadBalancer.sticky=true"
+      - "traefik.http.services.static2.loadBalancer.sticky.cookie=true"
+      - "traefik.http.services.static2.loadBalancer.sticky.cookie.name=static2"
     restart: always
   dynamic:
     container_name: express-dynamic
@@ -26,4 +37,9 @@ services:
       - "traefik.http.routers.dynamic.middlewares=dynamic"
       - "traefik.http.services.dynamic.loadbalancer.server.port=3000"
       - "traefik.http.middlewares.dynamic.stripprefix.prefixes=/api/animals"
+    restart: always
+  management:
+    container_name: portainer-management
+    build:
+      context: ../management-ui
     restart: always
