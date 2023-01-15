@@ -42,4 +42,8 @@ services:
     container_name: portainer-management
     build:
       context: ../management-ui
-    restart: always
+    labels:
+      - "traefik.http.routers.management.rule=Host(`localhost`) && PathPrefix(`/management`)"
+      - "traefik.http.routers.management.middlewares=management"
+      - "traefik.http.services.management.loadbalancer.server.port=9000"
+      - "traefik.http.middlewares.management.stripprefix.prefixes=/management"
