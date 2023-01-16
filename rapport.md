@@ -18,7 +18,7 @@ Le fichier docker compose est ce qui permet de lancer les différents services. 
 Le reverse proxy est configuré sur le port 80 et le port 8080 est utilisé pour accéder à l'interface de Traefik.
 
 ### Traefik
-est un reverse proxy qui permet de rediriger les requêtes vers les différents services. Il est configuré pour détecter les autres conteneurs et rediriger les requêtes vers le bon service.
+Est un reverse proxy qui permet de rediriger les requêtes vers les différents services. Il est configuré pour détecter les autres conteneurs et rediriger les requêtes vers le bon service.
 
 ## Serveurs web static
 Le service "static1" utilise une image construite de serveur web static.
@@ -30,20 +30,20 @@ Le service "static2" est un serveur "miroir" dédoublé de static1.
 Il permet d'équilibrer la charge entre les deux serveurs grâce au loadbalancing.
 
 ## Serveur dynamique
-Le service "dynamic" utilise une image construite à partir du contexte "../express-image" qui est un serveur express qui génère des animaux aléatoirement et les retourne en JSON.
+Le service "dynamic" utilise une image construite à partir du contexte "../express-image" qui est un serveur express qui génère des animaux aléatoirement et les retournent en JSON.
 Le service est accessible à l'adresse http://localhost/api/animals.
 ### Exemple de réponse
 ```json
 {
-  "firstName": "Flora",
-  "gender": "Female",
-  "birthday": "1985-02-03T14:43:58.136Z",
-  "species": "Cotton Rat"
+    "animal": "dog",
+    "name": "Buddy",
+    "age": 3,
+    "color": "brown"
 }
 ```
 ### index.js
 le fichier index contient du code express qui écoute sur le port 3000 toutes les requêtes http entrantes.
-Une fois qu'il a reçu une requête, il utilise la librairie chance pour générer des noms et des espèces aléatoires.
+Une fois qu'il a reçu une requête, il utilise la librairie chance pour générer des noms et des espèces d'animaux aléatoires.
 
 ### package.json
 Le fichier package.json contient les dépendances npm du projet. Notamment express et chance.
@@ -55,4 +55,3 @@ Ce service est accessible à l'adresse "http://localhost:9000".
 ## Conclusion
 En résumé, cette configuration utilise Traefik comme reverse proxy pour diriger les demandes vers les différents services en fonction des règles de routage définies, et inclut des services statiques et dynamiques, un service de gestion pour Portainer.
 le serveur fait également du loadbalancing entre les deux serveurs statiques et utilise les sticky sessions pour que les requêtes d'un même client soient toujours dirigées vers le même serveur.
-
