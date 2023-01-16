@@ -5,7 +5,10 @@ RUN apt-get update && \
   apt-get install -y vim
 
 COPY src /opt/app/
+WORKDIR /opt/app/
 
-CMD ["node", "opt/app/index.js"]
+RUN npm install
 
 EXPOSE 3000
+
+CMD ["node", "index.js"]

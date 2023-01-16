@@ -17,6 +17,7 @@ services:
       - "traefik.http.services.static1.loadBalancer.sticky=true"
       - "traefik.http.services.static1.loadBalancer.sticky.cookie=true"
       - "traefik.http.services.static1.loadBalancer.sticky.cookie.name=static1"
+      - "traefik.http.routers.static1.priority=1"
     restart: always
   static2:
     container_name: apache-static2
@@ -27,6 +28,7 @@ services:
       - "traefik.http.services.static2.loadBalancer.sticky=true"
       - "traefik.http.services.static2.loadBalancer.sticky.cookie=true"
       - "traefik.http.services.static2.loadBalancer.sticky.cookie.name=static2"
+      - "traefik.http.routers.static2.priority=3"
     restart: always
   dynamic:
     container_name: express-dynamic

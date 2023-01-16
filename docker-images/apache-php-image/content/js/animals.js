@@ -18,6 +18,8 @@ async function displayAnimals() {
         let htmlSegment = `<div class="animal">
             <h2>${animals[i].firstName}</h2>
             <p>${animals[i].species}</p>
+            <p>${animals[i].gender}</p>
+            <p>${animals[i].birthday}</p>
             </div>`;
         html += htmlSegment;
     }

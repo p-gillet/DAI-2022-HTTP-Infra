@@ -13,7 +13,7 @@ app.listen(port, function (){
 })
 
 function generateAnimals() {
-    var numberOfAnimals = chance.integer({min: 0, max: 10});
+    var numberOfAnimals = 1/*chance.integer({min: 0, max: 10})*/;
     console.log("Generating " + numberOfAnimals + " animals");
     var animals = [];
     for (var i = 0; i < numberOfAnimals; i++) {
